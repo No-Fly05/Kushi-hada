@@ -10,6 +10,31 @@ type CreateEdgeBody = {
   node1_id: number;
   node2_id: number;
 };
+router.get('/edges/:node1_id/:node2_id', async (ctx: Context) => {
+  const { node1_id, node2_id } = ctx.params;
+
+  // Validate IDs
+  if (!node1_id || !node2_id) {
+    ctx.status = 400;
+    ctx.body = { error: 'Both node1_id and node2_id are required' };
+    return;
+  }
+
+  // Check if such an edge exists (undirected)
+  const edge = await db('edge')
+    .where({ node1_id: node1_id, node2_id: node2_id })
+    .orWhere({ node1_id: node2_id, node2_id: node1_id })
+    .first();
+
+  if (!edge) {
+    ctx.status = 404;
+    ctx.body = { error: 'Edge not found' };
+    return;
+  }
+
+  ctx.status = 200;
+  ctx.body = { edge };
+});
 
 router.post('/edges', async (ctx: Context) => {
   const {node1_id, node2_id} = ctx.request.body as CreateEdgeBody;
@@ -43,9 +68,10 @@ router.post('/edges', async (ctx: Context) => {
   if (edges.length > 0) {
     ctx.status = 400;
     ctx.body = {error: 'edge already exsits'};
+    return;
   }
 
-  const [edge] = await db('edge').instert({node1_id, node2_id}).returning('*');
+  const [edge] = await db('edge').insert({node1_id, node2_id}).returning('*');
 
   ctx.status = 201;
   ctx.body = {edge};
