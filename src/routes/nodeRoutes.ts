@@ -16,6 +16,22 @@ router.get('/nodes/:id', async (ctx) => {
   }
 });
 
+router.post('/nodes', async (ctx) => {
+  const { label } = ctx.request.body as { label: string };
+
+  if (!label) {
+    ctx.status = 400;
+    ctx.body = { error: 'Label is required' };
+    return;
+  }
+
+  const [newNode] = await db('node')
+    .insert({ label })
+    .returning('*');  // returns the newly created node
+
+  ctx.body = newNode;
+});
+
 router.delete('/nodes/:id',async (ctx) => {
   const { id } = ctx.params;
 
