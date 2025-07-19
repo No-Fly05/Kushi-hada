@@ -1,4 +1,4 @@
-import { edgeRepository } from 'repositorys/edgeDB';
+import { edgeRepository } from 'dbAccsess/edgeDB';
 import { Context } from 'koa';
 import { CreateEdge, Edge } from 'validation/edgeCodec';
 

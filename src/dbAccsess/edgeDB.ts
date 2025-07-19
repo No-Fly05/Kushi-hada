@@ -1,8 +1,8 @@
 import db from '../db/db';
-import * as nodeRepository from 'repositorys/nodeDB';
+import {nodeRepository} from 'dbAccsess/nodeDB';
 import { Edge } from 'validation/edgeCodec';
 import { NotFoundError, BadRequestError } from 'middleware/errors'; 
-import { EdgeRepository } from './edge.repository';
+import { EdgeRepository } from '../repositorys/edge.repository';
 
 const edgeDb = db('edge')
 

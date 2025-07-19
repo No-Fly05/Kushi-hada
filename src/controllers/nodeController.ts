@@ -1,5 +1,5 @@
-import { nodeRepository } from 'repositorys/nodeDB';
-import { edgeRepository } from 'repositorys/edgeDB';
+import { nodeRepository } from 'dbAccsess/nodeDB';
+import { edgeRepository } from 'dbAccsess/edgeDB';
 import { Context } from 'koa';
 import { CreateNode, Node } from 'validation/nodeCodec';
 

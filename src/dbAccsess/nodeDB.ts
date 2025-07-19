@@ -1,5 +1,5 @@
 import db from '../db/db';
-import { NodeRepository } from './node.repository';
+import { NodeRepository } from '../repositorys/node.repository';
 import { Node } from 'validation/nodeCodec';
 import { NotFoundError } from 'middleware/errors'; 
 

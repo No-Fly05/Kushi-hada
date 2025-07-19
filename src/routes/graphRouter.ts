@@ -1,7 +1,7 @@
 import Router from '@koa/router';
 import { NodeDegreeCodec, AllPathsCodec } from 'validation/graphCodec';
 import { validateBody } from 'middleware/validateBody';
-import {getConnectedComponents, checkCycle, getNodeDegree, getAllPaths} from '../controllers/graphControl'
+import {getConnectedComponents, checkCycle, getNodeDegree, getAllPaths} from '../controllers/graphController'
 
 export const graphRouter = new Router().prefix('/graph');
 
