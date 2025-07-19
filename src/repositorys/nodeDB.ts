@@ -1,28 +1,33 @@
 import db from '../db/db';
-
+import { NodeRepository } from './node.repository';
 import { Node } from 'validation/nodeCodec';
 import { NotFoundError } from 'middleware/errors'; 
 
 const nodeDb = db('node')
 
-export const getAll = () : Promise<Node[]> => nodeDb.select('id'); 
+export const nodeRepository : NodeRepository = {
+    save: async ({lable}) => {
+        const [node] = await nodeDb.insert( {lable} ).returning('*') as Node[];
+        return node;
+    },
+    
+    getAll: async () => {
+        return await nodeDb.select('id');
+    },
 
-export const get = async(id:number) : Promise<Node> => {
-    const node : Node | undefined = nodeDb.where({ id }).first();
-    
-    if (!node) {
+    get: async (id: number) => {
+        const node: Node | undefined = await nodeDb.where({ id }).first();
+        if (!node) {
         throw new NotFoundError('Node not found');
-    } 
-    return node;
+        }
+        return node;
+    },
+
+    delete: async (id: number) => {
+        const deletedCount = nodeDb.where('id', id).del()
     
-};
-export const set = (lable:string) : Promise<Node> =>{ 
-    const [node] =nodeDb.insert({ lable }).returning('*');
-    return node;
-};
-export const remove  = async(id:number) : Promise<void> => {
-    const deletedCount = nodeDb.where('id', id).del()
-    if(deletedCount == 0){
-        throw new NotFoundError('node not found');
+        if(deletedCount == 0){
+            throw new NotFoundError('node not found');
+        }
     }
-};
+}
